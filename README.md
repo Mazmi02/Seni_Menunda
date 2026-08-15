@@ -2204,7 +2204,8 @@
             generateQuestions();
             function saveProgress() {
                 if (!questionContainerElement.classList.contains('hide') && orderedQuestions && currentQuestionIndex < orderedQuestions.length) {
-                    localforage.setItem('quizProgress_' + topicId, JSON.stringify({ currentQuestionIndex, score, orderedQuestions }));
+                    // Hapus orderedQuestions di sini
+                    localforage.setItem('quizProgress_' + topicId, JSON.stringify({ currentQuestionIndex, score }));
                 }
             }
             function loadProgress(callback) {
@@ -2223,7 +2224,8 @@
                 clearTimeout(questionTimeout);
                 loadProgress((savedData) => {
                     if (isContinuing && savedData) {
-                        ({ orderedQuestions, currentQuestionIndex, score } = savedData);
+                        ({ currentQuestionIndex, score } = savedData);
+                        orderedQuestions = [...questions];
                         currentZoomLevel = savedZoom;
                         zoomValueDisplay.innerText = currentZoomLevel;
                         applyZoom();
